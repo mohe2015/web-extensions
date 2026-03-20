@@ -13,7 +13,7 @@ keywords = ["api", "serde", "wasm", "web", "webassembly"]
 categories = ["api-bindings", "wasm"]
 
 [lib]
-crate-type = ["cdylib", "rlib"]
+crate-type = ["rlib"]
 
 [dependencies]
 gloo-utils = "0.1.5"
