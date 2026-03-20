@@ -12,9 +12,6 @@ license = "MIT"
 keywords = ["api", "serde", "wasm", "web", "webassembly"]
 categories = ["api-bindings", "wasm"]
 
-[lib]
-crate-type = ["rlib"]
-
 [dependencies]
 gloo-utils = "0.1.5"
 js-sys = "0.3.60"
