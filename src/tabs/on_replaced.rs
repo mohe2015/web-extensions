@@ -1,3 +1,5 @@
+use crate::tabs::CallbackUnwindSafe;
+
 use super::prelude::*;
 
 /// <https://developer.chrome.com/docs/extensions/reference/tabs/#event-onReplaced>
@@ -19,7 +21,7 @@ impl OnReplacedEventListener<'_> {
 impl OnReplaced {
     pub fn add_listener<L>(&self, mut listener: L) -> OnReplacedEventListener<'_>
     where
-        L: FnMut(ReplaceInfo) + 'static,
+        L: FnMut(ReplaceInfo) + CallbackUnwindSafe + 'static,
     {
         let listener = Closure::new(move |added_tab_id: i32, removed_tab_id: i32| {
             let replace_info = ReplaceInfo {

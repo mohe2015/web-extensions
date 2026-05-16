@@ -1,3 +1,5 @@
+use crate::tabs::CallbackUnwindSafe;
+
 use super::prelude::*;
 
 /// <https://developer.chrome.com/docs/extensions/reference/tabs/#event-onZoomChange>
@@ -19,7 +21,7 @@ impl OnZoomChangeEventListener<'_> {
 impl OnZoomChange {
     pub fn add_listener<L>(&self, mut listener: L) -> OnZoomChangeEventListener<'_>
     where
-        L: FnMut(ZoomChangeInfo) + 'static,
+        L: FnMut(ZoomChangeInfo) + CallbackUnwindSafe + 'static,
     {
         let listener =
             Closure::new(move |info: sys::TabZoomChangeInfo| listener(ZoomChangeInfo::from(info)));

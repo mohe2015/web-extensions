@@ -1,3 +1,5 @@
+use crate::tabs::CallbackUnwindSafe;
+
 use super::{prelude::*, MutedInfo, Status, Tab};
 
 /// <https://developer.chrome.com/docs/extensions/reference/tabs/#event-onUpdated>
@@ -22,7 +24,7 @@ impl OnUpdatedEventListener<'_> {
 impl OnUpdated {
     pub fn add_listener<L>(&self, mut listener: L) -> OnUpdatedEventListener<'_>
     where
-        L: FnMut(TabId, ChangeInfo, Tab) + 'static,
+        L: FnMut(TabId, ChangeInfo, Tab) + CallbackUnwindSafe + 'static,
     {
         let listener = Closure::new(
             move |tab_id: i32, info: sys::TabChangeInfo, tab: sys::Tab| {

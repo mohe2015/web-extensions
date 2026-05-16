@@ -1,3 +1,5 @@
+use crate::tabs::CallbackUnwindSafe;
+
 use super::{prelude::*, Tab};
 
 /// <https://developer.chrome.com/docs/extensions/reference/tabs/#event-onCreated>
@@ -19,7 +21,7 @@ impl OnCreatedEventListener<'_> {
 impl OnCreated {
     pub fn add_listener<L>(&self, mut listener: L) -> OnCreatedEventListener<'_>
     where
-        L: FnMut(Tab) + 'static,
+        L: FnMut(Tab) + CallbackUnwindSafe + 'static,
     {
         let listener = Closure::new(move |tab: sys::Tab| listener(Tab::from(tab)));
         OnCreatedEventListener(EventListener::raw_new(&self.0, listener))

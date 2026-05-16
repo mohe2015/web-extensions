@@ -1,3 +1,5 @@
+use crate::tabs::CallbackUnwindSafe;
+
 use super::prelude::*;
 use gloo_utils::format::JsValueSerdeExt;
 
@@ -20,7 +22,7 @@ impl OnHighlightedEventListener<'_> {
 impl OnHighlighted {
     pub fn add_listener<L>(&self, mut listener: L) -> OnHighlightedEventListener<'_>
     where
-        L: FnMut(HighlightInfo) + 'static,
+        L: FnMut(HighlightInfo) + CallbackUnwindSafe + 'static,
     {
         let listener =
             Closure::new(move |info: sys::TabHighlightInfo| listener(HighlightInfo::from(info)));

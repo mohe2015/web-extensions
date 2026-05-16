@@ -1,3 +1,5 @@
+use crate::tabs::CallbackUnwindSafe;
+
 use super::prelude::*;
 
 /// <https://developer.chrome.com/docs/extensions/reference/tabs/#event-onRemoved>
@@ -19,7 +21,7 @@ impl OnRemovedEventListener<'_> {
 impl OnRemoved {
     pub fn add_listener<L>(&self, mut listener: L) -> OnRemovedEventListener<'_>
     where
-        L: FnMut(TabId, RemoveInfo) + 'static,
+        L: FnMut(TabId, RemoveInfo) + CallbackUnwindSafe + 'static,
     {
         let listener = Closure::new(move |tab_id: i32, info: sys::TabRemoveInfo| {
             listener(TabId::from(tab_id), RemoveInfo::from(info))

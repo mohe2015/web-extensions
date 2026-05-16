@@ -1,3 +1,5 @@
+use crate::tabs::CallbackUnwindSafe;
+
 use super::prelude::*;
 
 /// <https://developer.chrome.com/docs/extensions/reference/tabs/#event-onDetached>
@@ -19,7 +21,7 @@ impl OnDetachedEventListener<'_> {
 impl OnDetached {
     pub fn add_listener<L>(&self, mut listener: L) -> OnDetachedEventListener<'_>
     where
-        L: FnMut(i32, DetachInfo) + 'static,
+        L: FnMut(i32, DetachInfo) + CallbackUnwindSafe + 'static,
     {
         let listener = Closure::new(move |tab_id: i32, info: sys::TabDetachInfo| {
             listener(tab_id, DetachInfo::from(info))

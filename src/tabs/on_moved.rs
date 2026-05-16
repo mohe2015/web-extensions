@@ -1,3 +1,5 @@
+use crate::tabs::CallbackUnwindSafe;
+
 use super::prelude::*;
 
 /// <https://developer.chrome.com/docs/extensions/reference/tabs/#event-onMoved>
@@ -19,7 +21,7 @@ impl OnMovedEventListener<'_> {
 impl OnMoved {
     pub fn add_listener<L>(&self, mut listener: L) -> OnMovedEventListener<'_>
     where
-        L: FnMut(TabId, MoveInfo) + 'static,
+        L: FnMut(TabId, MoveInfo) + CallbackUnwindSafe + 'static,
     {
         let listener = Closure::new(move |tab_id: i32, tab: sys::TabMoveInfo| {
             listener(TabId::from(tab_id), MoveInfo::from(tab))

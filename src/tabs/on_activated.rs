@@ -1,3 +1,5 @@
+use crate::tabs::CallbackUnwindSafe;
+
 use super::prelude::*;
 
 /// <https://developer.chrome.com/docs/extensions/reference/tabs/#event-onActivated>
@@ -20,7 +22,7 @@ impl OnActivatedEventListener<'_> {
 impl OnActivated {
     pub fn add_listener<L>(&self, mut listener: L) -> OnActivatedEventListener<'_>
     where
-        L: FnMut(ActiveInfo) + 'static,
+        L: FnMut(ActiveInfo) + CallbackUnwindSafe + 'static,
     {
         let listener =
             Closure::new(move |info: sys::TabActiveInfo| listener(ActiveInfo::from(info)));

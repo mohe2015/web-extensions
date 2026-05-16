@@ -1,3 +1,5 @@
+use crate::tabs::CallbackUnwindSafe;
+
 use super::prelude::*;
 
 /// <https://developer.chrome.com/docs/extensions/reference/tabs/#event-onAttached>
@@ -19,7 +21,7 @@ impl OnAttachedEventListener<'_> {
 impl OnAttached {
     pub fn add_listener<L>(&self, mut listener: L) -> OnAttachedEventListener<'_>
     where
-        L: FnMut(TabId, AttachInfo) + 'static,
+        L: FnMut(TabId, AttachInfo) + CallbackUnwindSafe + 'static,
     {
         let listener = Closure::new(move |tab_id: i32, info: sys::TabAttachInfo| {
             listener(TabId::from(tab_id), AttachInfo::from(info))
